@@ -60,8 +60,44 @@
 ; (rotate-left -45 '(a b c d e f g))
 
 ; ---- Ejercicio 4 ---- 
-; ---- Ejercicio 5 ---- 
-; ---- Ejercicio 6 ---- 
+
+; ---- Ejercicio 5 ----  FUNC
+(define (gcd a b)
+    (cond
+        [(> a b) (gcd b (- a b))]
+        [(< a b) (gcd a (- b a))]
+        [else a]))
+(display "\nEjercicio 5 - gcd\n")
+(gcd 13 7919)
+(gcd 20 16)
+(gcd 54 24)
+(gcd 6307 1995)
+(gcd 48 180)
+(gcd 42 56)
+
+; ---- Ejercicio 6 ---- NO FUNC
+(define (deep-reverse lst)
+    (cond
+        [(null? lst) '()]
+        [
+        (if (list? (first lst))
+            (append(list(reverse(first lst)))(deep-reverse(rest lst)))
+            (reverse(append(cons (first lst) '())(deep-reverse(rest lst)))))
+            ]
+        ))
+
+    ; (cond
+    ;     [(null? lst) '()]
+    ;     [(append(deep-reverse(rest lst))(cons (first lst) '()))]
+    ;     [(list? (first lst))
+    ;         (append(list(reverse(first lst))) (deep-reverse(rest lst)))]
+    ;     ))
+(display "\nEjercicio 6 - deep-reverse\n")
+(deep-reverse '())
+(deep-reverse '(a (b c d) 3))
+(deep-reverse '((1 2) 3 (4 (5 6))))
+(deep-reverse '(a (b (c (d (e (f (g (h i j)))))))))
+
 ; ---- Ejercicio 7 ---- 
 ; ---- Ejercicio 8 ---- 
 ; ---- Ejercicio 9 ---- 
