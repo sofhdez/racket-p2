@@ -10,7 +10,7 @@
 (define (insert n lst)
     (cond
         [(null? lst) 
-            '()]
+            (cons n '())]
         [(<= n (car lst))
             (cons n lst)]
         [(cons (car lst) (insert n (cdr lst)))])
@@ -22,10 +22,10 @@
 (insert 5 '(1 3 6 7 9 16))
 (insert 10 '(1 5 6))
 
-; ---- Ejercicio 2 ---- NO FUNC
+; ---- Ejercicio 2 ---- FUNC
 (define (insertion-sort lst) 
     (cond
-        [(null? lst) '()]
+        [(null? lst) lst]
         [(insert(car lst)(insertion-sort(cdr lst)))]))
 
 (display "\nEjercicio 2 - insertion-sort\n")
