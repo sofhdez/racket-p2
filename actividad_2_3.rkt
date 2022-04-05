@@ -101,11 +101,32 @@
 ; ---- Ejercicio 7 ---- 
 ; ---- Ejercicio 8 ---- 
 ; ---- Ejercicio 9 ---- 
-; ---- Ejercicio 10 ---- 
+; ---- Ejercicio 10 ---- Sofi 
 ; ---- Ejercicio 11 ---- 
 ; ---- Ejercicio 12 ---- 
 ; ---- Ejercicio 13 ---- 
-; ---- Ejercicio 14 ---- 
+; ---- Ejercicio 14 ---- Funciona
+(define (there-exists-one? pred lst)
+  (if (empty? lst)
+      #f  ; si no hay ninguno es falso
+      (if (pred (first lst))
+          #t  ; si hay alguno es verdadero
+
+          ; va por todo el resto de la lista para verificar si existe alguno
+          (there-exists-one? pred (rest lst)))))
+
+(display "\nEjercicio 14 - there-exists-one?\n")
+(there-exists-one? positive? '())
+; #f
+(there-exists-one? positive? '(-1 -10 4 -5 -2 -1))
+; #t
+(there-exists-one? negative? '(-1))
+; #t
+(there-exists-one? symbol? '(4 8 15 16 23 42))
+; #f
+(there-exists-one? symbol? '(4 8 15 sixteen 23 42))
+; #t
+
 ; ---- Ejercicio 15 ---- 
 ; ---- Ejercicio 16 ----
 ; ---- Ejercicio 17 ---- 
