@@ -29,14 +29,25 @@
 
 
 ; 14. Devuelve verdadero si hay un elemento en la lista que satisfaga la función f
-(define (there-exists-one? pred lst)
-  (if (empty? lst)
-      #f  ; si no hay ninguno es falso
-      (if (pred (first lst))
-          #t  ; si hay alguno es verdadero
+; (define (there-exists-one? pred lst)
+;   (if (empty? lst)
+;       #f  ; si no hay ninguno es falso
+;       (if (pred (first lst))
+;           #t  ; si hay alguno es verdadero
 
-          ; va por todo el resto de la lista para verificar si existe alguno
-          (there-exists-one? pred (rest lst)))))
+;           ; va por toda la lista
+;           (there-exists-one? pred (rest lst)))))
+
+(define (there-exists-one? pred lst)
+  (cond
+    [(empty? lst) #f]
+    [else (cond
+            [(pred (first lst))
+             #t]
+            [else map (there-exists-one? pred (rest lst))]
+            )]
+    )
+  )
 
 
 (there-exists-one? positive? '())
