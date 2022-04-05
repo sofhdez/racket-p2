@@ -23,35 +23,11 @@
   ; Call
   (sub-cont lst num))
 
-; (encode '(a a a a b c c a a d e e e e))
-; (encode '(1 2 3 4 5))
-; (encode '(9 9 9 9 9 9 9 9 9))
-
-
-; 14. Devuelve verdadero si hay un elemento en la lista que satisfaga la función f
-; (define (there-exists-one? pred lst)
-;   (if (empty? lst)
-;       #f  ; si no hay ninguno es falso
-;       (if (pred (first lst))
-;           #t  ; si hay alguno es verdadero
-
-;           ; va por toda la lista
-;           (there-exists-one? pred (rest lst)))))
-
-(define (there-exists-one? pred lst)
-  (cond
-    [(empty? lst) #f]
-    [else (cond
-            [(pred (first lst))
-             #t]
-            [else map (there-exists-one? pred (rest lst))]
-            )]
-    )
-  )
-
-
-(there-exists-one? positive? '())
-(there-exists-one? positive? '(-1 -10 4 -5 -2 -1))
-(there-exists-one? negative? '(-1))
-(there-exists-one? symbol? '(4 8 15 16 23 42))
-(there-exists-one? symbol? '(4 8 15 sixteen 23 42))
+(encode '())
+; ()
+(encode '(a a a a b c c a a d e e e e))
+; ((4 a) (1 b) (2 c) (2 a) (1 d) (4 e))
+(encode '(1 2 3 4 5))
+; ((1 1) (1 2) (1 3) (1 4) (1 5))
+(encode '(9 9 9 9 9 9 9 9 9))
+; ((9 9))
