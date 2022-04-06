@@ -101,6 +101,14 @@
 ; ---- Ejercicio 7 ----
 ; ---- Ejercicio 8 ----
 ; ---- Ejercicio 9 ----
+(define (compress lst)
+    (foldr (lambda (a b) (cons a (filter (lambda (c) (not (equal? a c))) b))) empty lst))
+
+(display "\nEjercicio 9 - compress\n")
+(compress '())
+(compress '(a b c d))
+(compress '(a a a a b c c a a d e e e e))
+(compress '(a a a a a a a a a a))
 ; ---- Ejercicio 10 ---- Sofi
 
 ; ---- Ejercicio 11 ----
