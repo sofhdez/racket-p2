@@ -39,8 +39,8 @@
   (cond
     [(null? lst) '()]
     [(> n 0)
-     (append(rotate-left(- n 1)(cdr lst))(cons (car lst) '()))
-     ]
+      (append(rotate-left(- n 1)(cdr lst))(cons (car lst) '()))
+      ]
     [(= n 0) lst]))
 ; (if (null? LIST)
 ;     '()
@@ -59,7 +59,22 @@
 (rotate-left 45 '(a b c d e f g))
 ; (rotate-left -45 '(a b c d e f g))
 
-; ---- Ejercicio 4 ----
+; ---- Ejercicio 4 ----   FUNC
+(require math)
+
+(define (prime-factors n)
+  ; car -> Returns the first element of the pair
+  ; cdr -> Returns the second element of the pair
+  ; card -> Returns (car (cdr x))
+  ;   > (cadr '((1 2) 3 4)) -> 3
+  (append-map (lambda (x) (make-list (cadr x) (car x))) (factorize n)))
+
+(display "\nEjercicio 4 - prime-factors\n")
+(prime-factors 1)
+(prime-factors 6)
+(prime-factors 96)
+(prime-factors 97)
+(prime-factors 666)
 
 ; ---- Ejercicio 5 ----  FUNC
 (define (gcd a b)
@@ -134,5 +149,51 @@
 ; #t
 
 ; ---- Ejercicio 15 ----
-; ---- Ejercicio 18 ----
+(define (linear-search lst x check)
+  (cond
+  [(null? lst) #f]
+  [(if(check x (first lst)) 
+    0
+    (+ 1 (linear-search (rest lst) x check)))]))
 
+(display "\nEjercicio 15 - linear-search\n")
+(linear-search '() 5 =)
+(linear-search '(48 77 30 31 5 20 91 92 69 97 28 32 17 18 96) 5 =)
+(linear-search '("red" "blue" "green" "black" "white") "black" string=?)
+(linear-search '(a b c d e f g h) 'h equal?)
+; ---- Ejercicio 18 ----
+(define (integral a b n f)
+
+  (define h (/ (- b a) n))
+
+  (define ncopia n)
+
+  (define (sumaIntegrales a b n f)
+    ; Contador en 0
+    (if (= n 0)
+        (f (+ a (* n h)))
+
+        ; En caso de que el contador llegue a la meta
+        (if (= n ncopia)
+            (+ (f (+ a (* n h))) (sumaIntegrales a b (- n 1) f))
+            (if (= (remainder n 2) 0) ; Si n es un número impar multiplicamos por 4, eoc. multiplicamos por 2 / Caso recursivo
+                ; Sino se multiplica por dos
+                (+ (* (f (+ a (* n h))) 2) (sumaIntegrales a b (- n 1) f))
+                ; Se multiplica por 4 si n es impar
+                (+ (* (f (+ a (* n h))) 4) (sumaIntegrales a b (- n 1) f))
+                )
+            )
+        )
+    )
+
+  ; Utilizamos las funciones ya definidas
+  (* (/ h 3) (sumaIntegrales a b n f))
+  )
+
+(display "\nEjercicio 18 - integral\n")
+(integral 0 1 10 (lambda (x) (* x x x)))
+(integral 1 2 10
+          (lambda (x)
+            (integral 3 4 10
+                      (lambda (y)
+                        (* x y)))))
