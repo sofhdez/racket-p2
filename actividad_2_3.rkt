@@ -8,13 +8,13 @@
 
 ; ---- Ejercicio 1 ---- FUNCIONA
 (define (insert n lst)
-    (cond
-        [(null? lst) 
-            (cons n '())]
-        [(<= n (car lst))
-            (cons n lst)]
-        [(cons (car lst) (insert n (cdr lst)))])
-)
+  (cond
+    [(null? lst)
+     (cons n '())]
+    [(<= n (car lst))
+     (cons n lst)]
+    [(cons (car lst) (insert n (cdr lst)))])
+  )
 
 (display "Ejercicio 1 - insert\n")
 (insert 14 '())
@@ -23,10 +23,10 @@
 (insert 10 '(1 5 6))
 
 ; ---- Ejercicio 2 ---- FUNC
-(define (insertion-sort lst) 
-    (cond
-        [(null? lst) lst]
-        [(insert(car lst)(insertion-sort(cdr lst)))]))
+(define (insertion-sort lst)
+  (cond
+    [(null? lst) lst]
+    [(insert(car lst)(insertion-sort(cdr lst)))]))
 
 (display "\nEjercicio 2 - insertion-sort\n")
 (insertion-sort '())
@@ -36,16 +36,16 @@
 
 ; ---- Ejercicio 3 ---- NO FUNC
 (define (rotate-left n lst)
-    (cond
-        [(null? lst) '()]
-        [(> n 0)
-            (append(rotate-left(- n 1)(cdr lst))(cons (car lst) '()))
-            ]
-        [(= n 0) lst]))
-    ; (if (null? LIST)
-    ;     '()
-    ;     (append (cdr LIST)
-    ;             (cons (car LIST) '()))))
+  (cond
+    [(null? lst) '()]
+    [(> n 0)
+     (append(rotate-left(- n 1)(cdr lst))(cons (car lst) '()))
+     ]
+    [(= n 0) lst]))
+; (if (null? LIST)
+;     '()
+;     (append (cdr LIST)
+;             (cons (car LIST) '()))))
 
 (display "\nEjercicio 3 - rotate-left\n")
 (rotate-left 5 '())
@@ -59,14 +59,14 @@
 (rotate-left 45 '(a b c d e f g))
 ; (rotate-left -45 '(a b c d e f g))
 
-; ---- Ejercicio 4 ---- 
+; ---- Ejercicio 4 ----
 
 ; ---- Ejercicio 5 ----  FUNC
 (define (gcd a b)
-    (cond
-        [(> a b) (gcd b (- a b))]
-        [(< a b) (gcd a (- b a))]
-        [else a]))
+  (cond
+    [(> a b) (gcd b (- a b))]
+    [(< a b) (gcd a (- b a))]
+    [else a]))
 (display "\nEjercicio 5 - gcd\n")
 (gcd 13 7919)
 (gcd 20 16)
@@ -77,37 +77,59 @@
 
 ; ---- Ejercicio 6 ---- NO FUNC
 (define (deep-reverse lst)
-    (cond
-        [(null? lst) '()]
-        [
-        (if (list? (first lst))
-            (append(list(reverse(first lst)))(deep-reverse(rest lst)))
-            (reverse(append(cons (first lst) '())(deep-reverse(rest lst)))))
-            ]
-        ))
+  (cond
+    [(null? lst) '()]
+    [
+     (if (list? (first lst))
+         (append(list(reverse(first lst)))(deep-reverse(rest lst)))
+         (reverse(append(cons (first lst) '())(deep-reverse(rest lst)))))
+     ]
+    ))
 
-    ; (cond
-    ;     [(null? lst) '()]
-    ;     [(append(deep-reverse(rest lst))(cons (first lst) '()))]
-    ;     [(list? (first lst))
-    ;         (append(list(reverse(first lst))) (deep-reverse(rest lst)))]
-    ;     ))
+; (cond
+;     [(null? lst) '()]
+;     [(append(deep-reverse(rest lst))(cons (first lst) '()))]
+;     [(list? (first lst))
+;         (append(list(reverse(first lst))) (deep-reverse(rest lst)))]
+;     ))
 (display "\nEjercicio 6 - deep-reverse\n")
 (deep-reverse '())
 (deep-reverse '(a (b c d) 3))
 (deep-reverse '((1 2) 3 (4 (5 6))))
 (deep-reverse '(a (b (c (d (e (f (g (h i j)))))))))
 
-; ---- Ejercicio 7 ---- 
-; ---- Ejercicio 8 ---- 
-; ---- Ejercicio 9 ---- 
-; ---- Ejercicio 10 ---- 
-; ---- Ejercicio 11 ---- 
-; ---- Ejercicio 12 ---- 
-; ---- Ejercicio 13 ---- 
-; ---- Ejercicio 14 ---- 
-; ---- Ejercicio 15 ---- 
-; ---- Ejercicio 16 ----
-; ---- Ejercicio 17 ---- 
-; ---- Ejercicio 18 ---- 
+; ---- Ejercicio 7 ----
+; ---- Ejercicio 8 ----
+; ---- Ejercicio 9 ----
+; ---- Ejercicio 10 ---- Sofi
+
+; ---- Ejercicio 11 ----
+; ---- Ejercicio 12 ----
+; ---- Ejercicio 13 ----
+; ---- Ejercicio 14 ---- Funciona
+(define (there-exists-one? pred lst)
+  (cond
+    [(empty? lst) #f]
+    [else (cond
+            [(pred (first lst))
+             #t]
+            [else map (there-exists-one? pred (rest lst))]
+            )]
+    )
+  )
+
+(display "\nEjercicio 14 - there-exists-one?\n")
+(there-exists-one? positive? '())
+; #f
+(there-exists-one? positive? '(-1 -10 4 -5 -2 -1))
+; #t
+(there-exists-one? negative? '(-1))
+; #t
+(there-exists-one? symbol? '(4 8 15 16 23 42))
+; #f
+(there-exists-one? symbol? '(4 8 15 sixteen 23 42))
+; #t
+
+; ---- Ejercicio 15 ----
+; ---- Ejercicio 18 ----
 
