@@ -75,23 +75,18 @@
 (gcd 48 180)
 (gcd 42 56)
 
-; ---- Ejercicio 6 ---- NO FUNC
+; ---- Ejercicio 6 ---- Func
 (define (deep-reverse lst)
   (cond
     [(null? lst) '()]
-    [
-     (if (list? (first lst))
-         (append(list(reverse(first lst)))(deep-reverse(rest lst)))
-         (reverse(append(cons (first lst) '())(deep-reverse(rest lst)))))
-     ]
-    ))
+    [(if(list? (car lst))
+        (append(deep-reverse(cdr lst))(cons (deep-reverse(car lst)) '()))
+        (append(deep-reverse(cdr lst))(list (car lst))))]))     
 
-; (cond
-;     [(null? lst) '()]
-;     [(append(deep-reverse(rest lst))(cons (first lst) '()))]
-;     [(list? (first lst))
-;         (append(list(reverse(first lst))) (deep-reverse(rest lst)))]
-;     ))
+    ;  (if (list? (first lst))
+    ;      (append(list(reverse(first lst)))(deep-reverse(rest lst)))
+    ;      (reverse(append(cons (first lst) '())(deep-reverse(rest lst)))))
+
 (display "\nEjercicio 6 - deep-reverse\n")
 (deep-reverse '())
 (deep-reverse '(a (b c d) 3))
