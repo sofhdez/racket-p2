@@ -168,7 +168,22 @@
 (compress '(a a a a b c c a a d e e e e))
 (compress '(a a a a a a a a a a))
 ; ---- Ejercicio 10 ----
+(define (encode lst)
+  (map reverse (reverse (foldl (lambda (x y) 
+           (if (or (empty? y) (not (equal? x (caar y))))
+               (cons (list x 1) y)
+               (cons (list x (add1 (cadar y))) (cdr y))))
+         null lst))))
 
+(display "\nEjercicio 10 - encode")
+(encode '())
+;⇒ ()
+(encode '(a a a a b c c a a d e e e e))
+;⇒ ((4 a) (1 b) (2 c) (2 a) (1 d) (4 e))
+(encode '(1 2 3 4 5))
+;⇒ ((1 1) (1 2) (1 3) (1 4) (1 5))
+(encode '(9 9 9 9 9 9 9 9 9))
+;⇒ ((9 9))
 ; ---- Ejercicio 11 ----
 (define (encode-modified lst)
   (for/fold ((ht #hash()))
