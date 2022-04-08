@@ -90,23 +90,12 @@
 (gcd 48 180)
 (gcd 42 56)
 
-; ---- Ejercicio 6 ---- NO FUNC
-(define (deep-reverse lst)
-  (cond
-    [(null? lst) '()]
-    [
-     (if (list? (first lst))
-         (append(list(reverse(first lst)))(deep-reverse(rest lst)))
-         (reverse(append(cons (first lst) '())(deep-reverse(rest lst)))))
-     ]
-    ))
+; ---- Ejercicio 6 ---- FUNC
+(define (deep-reverse l)
+  (if (list? l)
+      (reverse (map deep-reverse l))
+      l))
 
-; (cond
-;     [(null? lst) '()]
-;     [(append(deep-reverse(rest lst))(cons (first lst) '()))]
-;     [(list? (first lst))
-;         (append(list(reverse(first lst))) (deep-reverse(rest lst)))]
-;     ))
 (display "\nEjercicio 6 - deep-reverse\n")
 (deep-reverse '())
 (deep-reverse '(a (b c d) 3))
@@ -129,30 +118,11 @@
 
 (display "\nEjercicio 7 - insert-anywhere\n")
 (insert-everywhere 1 '())
-; ⇒ ((1))
 (insert-everywhere 1 '(a))
-; ⇒ ((1 a) (a 1))
 (insert-everywhere 1 '(a b c))
-; ⇒ ((1 a b c) (a 1 b c) (a b 1 c) (a b c 1))
 (insert-everywhere 1 '(a b c d e))
-; ⇒ ((1 a b c d e)
-  ;  (a 1 b c d e)
-  ;  (a b 1 c d e)
-  ;  (a b c 1 d e)
-  ;  (a b c d 1 e)
-  ;  (a b c d e 1))
 (insert-everywhere 'x '(1 2 3 4 5 6 7 8 9 10))
-; ⇒ ((x 1 2 3 4 5 6 7 8 9 10)
-  ;  (1 x 2 3 4 5 6 7 8 9 10)
-  ;  (1 2 x 3 4 5 6 7 8 9 10)
-  ;  (1 2 3 x 4 5 6 7 8 9 10)
-  ;  (1 2 3 4 x 5 6 7 8 9 10)
-  ;  (1 2 3 4 5 x 6 7 8 9 10)
-  ;  (1 2 3 4 5 6 x 7 8 9 10)
-  ;  (1 2 3 4 5 6 7 x 8 9 10)
-  ;  (1 2 3 4 5 6 7 8 x 9 10)
-  ;  (1 2 3 4 5 6 7 8 9 x 10)
-  ;  (1 2 3 4 5 6 7 8 9 10 x))
+
 ; ---- Ejercicio 8 ----
 
 
