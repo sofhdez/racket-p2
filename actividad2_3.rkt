@@ -138,12 +138,29 @@
 ; ---- Ejercicio 10 ----
 
 ; ---- Ejercicio 11 ----
+(define (encode-modified lst)
+  (for/fold ((ht #hash()))
+            ((key (in-list lst)))
+    (hash-update ht key add1 0)))
+
+(display "\nEjercicio 11 - there-exists-one?\n")
+
+(encode-modified '())
+; ⇒ ()
+(encode-modified '(a a a a b c c a a d e e e e))
+; ⇒ ((4 a) b (2 c) (2 a) d (4 e))
+(encode-modified '(1 2 3 4 5))
+; ⇒ (1 2 3 4 5)
+(encode-modified '(9 9 9 9 9 9 9 9 9))
+; ⇒ ((9 9))
+
 ; ---- Ejercicio 12 ----
 ; ---- Ejercicio 13 ----
 (define (args-swap f)
   (λ (x y)
     (f y x)))
-  
+
+(display "\nEjercicio 13 - args-swap\n")
 ((args-swap list) 1 2)
 ; ⇒ (2 1)
 ((args-swap /) 8 2)
