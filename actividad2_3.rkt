@@ -37,27 +37,28 @@
 ; ---- Ejercicio 3 ---- NO FUNC
 (define (rotate-left n lst)
   (cond
-    [(null? lst) '()]
-    [(> n 0)
-     (append(rotate-left(- n 1)(cdr lst))(cons (car lst) '()))
-     ]
-    [(= n 0) lst]))
-; (if (null? LIST)
-;     '()
-;     (append (cdr LIST)
-;             (cons (car LIST) '()))))
+    [(empty? lst) '()]
+    [(= n 0) lst]
+    [(> n 0)(if( < n (length lst)) (append(list-tail lst n)(remv* (list-tail lst n) lst))
+               (append(list-tail lst (remainder n (length lst)))(remv* (list-tail lst (remainder n (length lst))) lst)))]
+    [(< n 0) (append(take-right lst (- (remainder n (length lst)) ))(drop-right lst (- (remainder n (length lst)))))]
+    ))
 
 (display "\nEjercicio 3 - rotate-left\n")
 (rotate-left 5 '())
+; ⇒ ()
 (rotate-left 0 '(a b c d e f g))
+; ⇒ (a b c d e f g)
 (rotate-left 1 '(a b c d e f g))
-; (rotate-left -1 '(a b c d e f g))
-(rotate-left 2 '(a b c d e f g))
-; (rotate-left -3 '(a b c d e f g))
+; ⇒ (b c d e f g a)
+(rotate-left -1 '(a b c d e f g))
+; ⇒ (g a b c d e f)
+(rotate-left 3 '(a b c d e f g))
+; ⇒ (d e f g a b c)
+(rotate-left -3 '(a b c d e f g))
+; ⇒ (e f g a b c d)
 (rotate-left 8 '(a b c d e f g))
-; (rotate-left -8 '(a b c d e f g))
-(rotate-left 45 '(a b c d e f g))
-; (rotate-left -45 '(a b c d e f g))
+; ⇒ (b c d e f g a)
 
 ; ---- Ejercicio 4 ----   FUNC
 (require math)
@@ -124,7 +125,38 @@
 (insert-everywhere 'x '(1 2 3 4 5 6 7 8 9 10))
 
 ; ---- Ejercicio 8 ----
+; modificar algo
 
+(define (pack lst)
+  	(if (equal? lst null) null
+            	(cons (paste lst) (pack (throw lst)))
+                ))
+
+(define (paste lst)
+  (cond ((equal? lst null) null)
+        	  ((equal? (cdr lst) null)lst)
+                  ((equal? (car lst) (car (cdr lst)))
+                   (cons (car lst) (paste (cdr lst))))
+                  (true (list (car lst)))
+                  ))
+
+(define (throw lst)
+  (cond ((equal? lst null) null)
+        	  ((equal? (cdr lst) null) null)
+                  ((equal? (car lst) (car (cdr lst)))
+                   (throw (cdr lst)))
+                  (true (cdr lst))
+                  ))
+
+(display "\nEjercicio 8 - pack\n")
+(pack '())
+; ⇒ ()
+(pack '(a a a a b c c a a d e e e e))
+; ⇒ ((a a a a) (b) (c c) (a a) (d) (e e e e))
+(pack '(1 2 3 4 5))
+; ⇒ ((1) (2) (3) (4) (5))
+(pack '(9 9 9 9 9 9 9 9 9))
+; ⇒ ((9 9 9 9 9 9 9 9 9))
 
 ; ---- Ejercicio 9 ----
 (define (compress lst)
@@ -197,10 +229,10 @@
 ; ---- Ejercicio 15 ----
 (define (linear-search lst x check)
   (cond
-  [(null? lst) #f]
-  [(if(check x (first lst)) 
-    0
-    (+ 1 (linear-search (rest lst) x check)))]))
+    [(null? lst) #f]
+    [(if(check x (first lst))
+        0
+        (+ 1 (linear-search (rest lst) x check)))]))
 
 (display "\nEjercicio 15 - linear-search\n")
 (linear-search '() 5 =)
