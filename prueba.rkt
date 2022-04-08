@@ -1,13 +1,11 @@
 #lang slideshow
-(define (linear-search lst x check)
+(define (pack x)
   (cond
-  [(null? lst) #f]
-  [(if(check x (first lst)) 
-    0
-    (+ 1 (linear-search (rest lst) x check)))]))
+    [(null? x) '()]
+    [(pair? x) (append (map (lambda (y) (if(equal? y (car x)) list y)) x))]))
+  
 
-(display "\nEjercicio 15 - linear-search\n")
-(linear-search '() 5 =)
-(linear-search '(48 77 30 31 5 20 91 92 69 97 28 32 17 18 96) 5 =)
-(linear-search '("red" "blue" "green" "black" "white") "black" string=?)
-(linear-search '(a b c d e f g h) 'h equal?)
+(pack '())
+(pack '(a a a a b c c a a d e e e e))
+(pack '(1 2 3 4 5))
+(pack '(9 9 9 9 9 9 9 9 9))

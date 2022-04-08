@@ -98,18 +98,32 @@
         (append(deep-reverse(cdr lst))(cons (deep-reverse(car lst)) '()))
         (append(deep-reverse(cdr lst))(list (car lst))))]))     
 
-    ;  (if (list? (first lst))
-    ;      (append(list(reverse(first lst)))(deep-reverse(rest lst)))
-    ;      (reverse(append(cons (first lst) '())(deep-reverse(rest lst)))))
-
 (display "\nEjercicio 6 - deep-reverse\n")
 (deep-reverse '())
 (deep-reverse '(a (b c d) 3))
 (deep-reverse '((1 2) 3 (4 (5 6))))
 (deep-reverse '(a (b (c (d (e (f (g (h i j)))))))))
 
-; ---- Ejercicio 7 ----
+; ---- Ejercicio 7 ---- funciona
+(define (add-at pos x lst)
+  (cond
+    [(null? lst) (list x)]
+    [(if (= pos 0)
+      (cons x lst)
+      (cons (first lst) (add-at (- pos 1) x (rest lst))))]))
+
+(define (insert-everywhere n lst)
+  (map (lambda (pos)
+      (add-at pos n lst))
+    (range 0 (+ 1 (length lst)))))
+
+(display "\nEjercicio 7 - insert-everywhere\n")
+(insert-everywhere 1 '())
+(insert-everywhere 1 '(a))
+(insert-everywhere 1 '(a b c))
+
 ; ---- Ejercicio 8 ----
+
 ; ---- Ejercicio 9 ----
 (define (compress lst)
     (foldr (lambda (a b) (cons a (filter (lambda (c) (not (equal? a c))) b))) empty lst))
