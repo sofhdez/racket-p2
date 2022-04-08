@@ -131,6 +131,19 @@
 ; ---- Ejercicio 11 ----
 ; ---- Ejercicio 12 ----
 ; ---- Ejercicio 13 ----
+(define (args-swap f)
+  (λ (x y)
+    (f y x)))
+  
+((args-swap list) 1 2)
+; ⇒ (2 1)
+((args-swap /) 8 2)
+; ⇒ 1/4
+((args-swap cons) '(1 2 3) '(4 5 6))
+; ⇒ ((4 5 6) 1 2 3)
+((args-swap map) '(-1 1 2 5 10) /)
+; ⇒ (-1 1 1/2 1/5 1/10)
+
 ; ---- Ejercicio 14 ---- Funciona
 (define (there-exists-one? pred lst)
   (cond
