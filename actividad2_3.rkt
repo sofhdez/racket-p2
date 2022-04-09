@@ -171,25 +171,25 @@
 ; (1 2 3 4 5 6 7 8 9 10 x))
 ; ---- Ejercicio 8 ----
 (define (pack lst)
-  (if (equal? lst null) null
-            (cons (paste lst) (pack (throw lst)))
-              ))
+  (if (equal? lst null)
+    null
+    (cons (paste lst) (pack (throw lst)))))
 
 (define (paste lst)
-  (cond ((equal? lst null) null)
-        	  ((equal? (cdr lst) null)lst)
-                  ((equal? (car lst) (car (cdr lst)))
-                   (cons (car lst) (paste (cdr lst))))
-                  (true (list (car lst)))
-                  ))
+  (cond 
+    [(equal? lst null) null]
+    [(equal? (cdr lst) null)lst]
+    [(equal? (car lst) (car (cdr lst)))
+      (cons (car lst) (paste (cdr lst)))]
+    [true (list (car lst))]))
 
 (define (throw lst)
-  (cond ((equal? lst null) null)
-        	  ((equal? (cdr lst) null) null)
-                  ((equal? (car lst) (car (cdr lst)))
-                   (throw (cdr lst)))
-                  (true (cdr lst))
-                  ))
+  (cond 
+    [(equal? lst null) null]
+    [(equal? (cdr lst) null) null]
+    [(equal? (car lst) (car (cdr lst)))
+      (throw (cdr lst))]
+    [true (cdr lst)]))
 
 (display "\nEjercicio 8 - pack\n")
 (pack '())
@@ -203,7 +203,15 @@
 
 ; ---- Ejercicio 9 ----
 (define (compress lst)
-  (foldr (lambda (a b) (cons a (filter (lambda (c) (not (equal? a c))) b))) empty lst))
+  (cond
+    [(null? lst) null]
+    ((null? (cdr lst)) lst)
+    [(equal? (first lst) (first (rest lst)))
+        (compress (rest lst))]
+  [true (cons (first lst) (compress (rest lst)))]))
+
+; (define (compress lst)
+;   (foldr (lambda (a b) (cons a (filter (lambda (c) (not (equal? a c))) b))) empty lst))
 
 (display "\nEjercicio 9 - compress\n")
 (compress '())
