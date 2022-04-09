@@ -1,1 +1,1 @@
-(hash->list ht)
+(displayln "Función 9: Compress")

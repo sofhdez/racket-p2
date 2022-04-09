@@ -6,23 +6,28 @@
 
 #lang slideshow
 
-; ---- Ejercicio 1 ---- FUNCIONA
+; ---- Ejercicio 1 ----
 (define (insert n lst)
   (cond
     [(null? lst)
-     (cons n '())]
+      (cons n '())]
     [(<= n (car lst))
-     (cons n lst)]
+      (cons n lst)]
     [(cons (car lst) (insert n (cdr lst)))])
   )
 
 (display "Ejercicio 1 - insert\n")
 (insert 14 '())
+; ⇒ (14)
 (insert 4 '(5 6 7 8))
+; ⇒ '(4 5 6 7 8)
 (insert 5 '(1 3 6 7 9 16))
+; ⇒ (1 3 5 6 7 9 16)
 (insert 10 '(1 5 6))
+; ⇒ (1 5 6 10)
 
-; ---- Ejercicio 2 ---- FUNC
+
+; ---- Ejercicio 2 ----
 (define (insertion-sort lst)
   (cond
     [(null? lst) lst]
@@ -30,17 +35,22 @@
 
 (display "\nEjercicio 2 - insertion-sort\n")
 (insertion-sort '())
+; ⇒ ()
 (insertion-sort '(4 3 6 8 3 0 9 1 7))
+; ⇒ (0 1 3 3 4 6 7 8 9)
 (insertion-sort '(1 2 3 4 5 6))
+; ⇒ (1 2 3 4 5 6)
 (insertion-sort '(5 5 5 1 5 5 5))
+; ⇒ (1 5 5 5 5 5 5)
 
-; ---- Ejercicio 3 ---- NO FUNC
+
+; ---- Ejercicio 3 ----
 (define (rotate-left n lst)
   (cond
     [(empty? lst) '()]
     [(= n 0) lst]
     [(> n 0)(if( < n (length lst)) (append(list-tail lst n)(remv* (list-tail lst n) lst))
-               (append(list-tail lst (remainder n (length lst)))(remv* (list-tail lst (remainder n (length lst))) lst)))]
+              (append(list-tail lst (remainder n (length lst)))(remv* (list-tail lst (remainder n (length lst))) lst)))]
     [(< n 0) (append(take-right lst (- (remainder n (length lst)) ))(drop-right lst (- (remainder n (length lst)))))]
     ))
 
@@ -59,25 +69,33 @@
 ; ⇒ (e f g a b c d)
 (rotate-left 8 '(a b c d e f g))
 ; ⇒ (b c d e f g a)
+(rotate-left -8 '(a b c d e f g))
+; ⇒ (g a b c d e f)
+(rotate-left 45 '(a b c d e f g))
+; ⇒ (d e f g a b c)
+(rotate-left -45 '(a b c d e f g))
+; ⇒ (e f g a b c d)
 
-; ---- Ejercicio 4 ----   FUNC
+; ---- Ejercicio 4 ----  
 (require math)
 
 (define (prime-factors n)
-  ; car -> Returns the first element of the pair
-  ; cdr -> Returns the second element of the pair
-  ; card -> Returns (car (cdr x))
-  ;   > (cadr '((1 2) 3 4)) -> 3
   (append-map (lambda (x) (make-list (cadr x) (car x))) (factorize n)))
 
 (display "\nEjercicio 4 - prime-factors\n")
 (prime-factors 1)
+; ⇒ ()
 (prime-factors 6)
+; ⇒ (2 3)
 (prime-factors 96)
+; ⇒ (2 2 2 2 2 3)
 (prime-factors 97)
+; ⇒ (97)
 (prime-factors 666)
+; ⇒ (2 3 3 37)
 
-; ---- Ejercicio 5 ----  FUNC
+
+; ---- Ejercicio 5 ----
 (define (gcd a b)
   (cond
     [(> a b) (gcd b (- a b))]
@@ -85,52 +103,79 @@
     [else a]))
 (display "\nEjercicio 5 - gcd\n")
 (gcd 13 7919)
+; ⇒ 1
 (gcd 20 16)
+; ⇒ 4
 (gcd 54 24)
+; ⇒ 6
 (gcd 6307 1995)
+; ⇒ 7
 (gcd 48 180)
+; ⇒ 12
 (gcd 42 56)
+; ⇒ 14
 
-; ---- Ejercicio 6 ---- FUNC
+; ---- Ejercicio 6 ----
 (define (deep-reverse l)
   (if (list? l)
-      (reverse (map deep-reverse l))
-      l))
+    (reverse (map deep-reverse l))l))
 
 (display "\nEjercicio 6 - deep-reverse\n")
 (deep-reverse '())
+; ⇒ ()
 (deep-reverse '(a (b c d) 3))
+; ⇒ (3 (d c b) a)
 (deep-reverse '((1 2) 3 (4 (5 6))))
+; ⇒ (((6 5) 4) 3 (2 1))
 (deep-reverse '(a (b (c (d (e (f (g (h i j)))))))))
+; ⇒ ((((((((j i h) g) f) e) d) c) b) a)
 
 ; ---- Ejercicio 7 ----
 (define (insert-at pos elmt lst)
   (if (empty? lst) (list elmt)
-      (if (= 1 pos)
-          (cons elmt lst)
-          (cons (first lst)
-                (insert-at (- pos 1) elmt (rest lst))))))
+    (if (= 1 pos)
+      (cons elmt lst)
+      (cons (first lst)
+        (insert-at (- pos 1) elmt (rest lst))))))
 
 (define (insert-everywhere sym los)
   (map (lambda (i)
-         (insert-at i sym los)
-         )
-       (range 1 (+ 2 (length los)))))
+    (insert-at i sym los))
+  (range 1 (+ 2 (length los)))))
 
 (display "\nEjercicio 7 - insert-anywhere\n")
 (insert-everywhere 1 '())
+; ⇒ ((1))
 (insert-everywhere 1 '(a))
+; ⇒ ((1 a) (a 1))
 (insert-everywhere 1 '(a b c))
+; ⇒ ((1 a b c) (a 1 b c) (a b 1 c) (a b c 1))
 (insert-everywhere 1 '(a b c d e))
+; ⇒ ((1 a b c d e)
+; (a 1 b c d e)
+; (a b 1 c d e)
+; (a b c 1 d e)
+; (a b c d 1 e)
+; (a b c d e 1))
 (insert-everywhere 'x '(1 2 3 4 5 6 7 8 9 10))
-
+; ⇒ ((x 1 2 3 4 5 6 7 8 9 10)
+; (1 x 2 3 4 5 6 7 8 9 10)
+; (1 2 x 3 4 5 6 7 8 9 10)
+; (1 2 3 x 4 5 6 7 8 9 10)
+; (1 2 3 4 x 5 6 7 8 9 10)
+; (1 2 3 4 5 x 6 7 8 9 10)
+; (1 2 3 4 5 6 x 7 8 9 10)
+; (1 2 3 4 5 6 7 x 8 9 10)
+; (1 2 3 4 5 6 7 8 x 9 10)
+; (1 2 3 4 5 6 7 8 9 x 10)
+; (1 2 3 4 5 6 7 8 9 10 x))
 ; ---- Ejercicio 8 ----
 ; modificar algo
 
 (define (pack lst)
-  	(if (equal? lst null) null
-            	(cons (paste lst) (pack (throw lst)))
-                ))
+  (if (equal? lst null) null
+            (cons (paste lst) (pack (throw lst)))
+              ))
 
 (define (paste lst)
   (cond ((equal? lst null) null)
@@ -164,18 +209,24 @@
 
 (display "\nEjercicio 9 - compress\n")
 (compress '())
+; ⇒ ()
 (compress '(a b c d))
+; ⇒ '(a b c d)
 (compress '(a a a a b c c a a d e e e e))
+; ⇒ (a b c a d)
 (compress '(a a a a a a a a a a))
+; ⇒ (a)
+
+
 ; ---- Ejercicio 10 ----
 (define (encode lst)
   (map reverse (reverse (foldl (lambda (x y) 
-           (if (or (empty? y) (not (equal? x (caar y))))
-               (cons (list x 1) y)
-               (cons (list x (add1 (cadar y))) (cdr y))))
-         null lst))))
+    (if (or (empty? y) (not (equal? x (caar y))))
+      (cons (list x 1) y)
+      (cons (list x (add1 (cadar y))) (cdr y))))
+    null lst))))
 
-(display "\nEjercicio 10 - encode")
+(display "\nEjercicio 10 - encode\n")
 (encode '())
 ;⇒ ()
 (encode '(a a a a b c c a a d e e e e))
@@ -184,6 +235,7 @@
 ;⇒ ((1 1) (1 2) (1 3) (1 4) (1 5))
 (encode '(9 9 9 9 9 9 9 9 9))
 ;⇒ ((9 9))
+
 ; ---- Ejercicio 11 ----
 (define (encode-modified lst)
   (for/fold ((ht #hash()))
@@ -191,7 +243,6 @@
     (hash-update ht key add1 0)))
 
 (display "\nEjercicio 11 - there-exists-one?\n")
-
 (encode-modified '())
 ; ⇒ ()
 (encode-modified '(a a a a b c c a a d e e e e))
@@ -202,9 +253,10 @@
 ; ⇒ ((9 9))
 
 ; ---- Ejercicio 12 ----
+
 ; ---- Ejercicio 13 ----
 (define (args-swap f)
-  (λ (x y)
+  (lambda (x y)
     (f y x)))
 
 (display "\nEjercicio 13 - args-swap\n")
@@ -223,7 +275,7 @@
     [(empty? lst) #f]
     [else (cond
             [(pred (first lst))
-             #t]
+              #t]
             [else map (there-exists-one? pred (rest lst))]
             )]
     )
@@ -251,9 +303,13 @@
 
 (display "\nEjercicio 15 - linear-search\n")
 (linear-search '() 5 =)
+; ⇒ #f
 (linear-search '(48 77 30 31 5 20 91 92 69 97 28 32 17 18 96) 5 =)
+; ⇒ 4
 (linear-search '("red" "blue" "green" "black" "white") "black" string=?)
+; ⇒ 3
 (linear-search '(a b c d e f g h) 'h equal?)
+; ⇒ 7
 
 ; ---- Ejercicio 18 ---- Func
 (define (integral a b n f)
@@ -286,8 +342,10 @@
 
 (display "\nEjercicio 18 - integral\n")
 (integral 0 1 10 (lambda (x) (* x x x)))
+; ⇒ 1/4
 (integral 1 2 10
-          (lambda (x)
-            (integral 3 4 10
-                      (lambda (y)
-                        (* x y)))))
+  (lambda (x)
+    (integral 3 4 10
+      (lambda (y)
+        (* x y)))))
+; ⇒ 21/4
