@@ -244,9 +244,11 @@
 
 ; ---- Ejercicio 11 ----
 (define (encode-modified lst)
-  (for/fold ((ht #hash()))
-            ((key (in-list lst)))
-    (hash-update ht key add1 0)))
+  (define (encode-modified-aux lst)
+    (cond ((null? lst) null)
+          ((= 1 (caar lst)) (cons (cadar lst) (encode-modified-aux (cdr lst))))
+          (else (cons (car lst) (encode-modified-aux (cdr lst))))))
+  (encode-modified-aux (encode lst)))
 
 (display "\nEjercicio 11 - there-exists-one?\n")
 (encode-modified '())
@@ -259,6 +261,37 @@
 ; ⇒ ((9 9))
 
 ; ---- Ejercicio 12 ----
+(define (repeat-items num val)
+  (if (= num 0)
+      empty
+      (cons val (repeat-items (- num 1) val))))
+
+(define (my-decode xs)
+  (define (my-decode-aux xs)
+    (if (null? xs)
+        empty
+        (append (repeat-items (caar xs) (cadar xs))
+                (my-decode-aux (cdr xs)))))
+  (my-decode-aux xs))
+
+(define (my-decode-modified xs)
+  (define (my-decode-modified-aux xs)
+    (cond ((null? xs) null)
+          ((not (list? (car xs))) (cons (cons 1 (cons (car xs) '()))
+                                        (my-decode-modified-aux (cdr xs))))
+          (else (cons (car xs) (my-decode-modified-aux (cdr xs))))))
+  
+  (my-decode (my-decode-modified-aux xs)))
+
+(display "\nEjercicio 12 - decode\n")
+(my-decode-modified '())
+; ⇒ ()
+(my-decode-modified '((4 a) b (2 c) (2 a) d (4 e)))
+; ⇒ (a a a a b c c a a d e e e e)
+(my-decode-modified '(1 2 3 4 5))
+; ⇒ (1 2 3 4 5)
+(my-decode-modified '((9 9)))
+; ⇒ (9 9 9 9 9 9 9 9 9)
 
 ; ---- Ejercicio 13 ----
 (define (args-swap f)
