@@ -43,7 +43,6 @@
 (insertion-sort '(5 5 5 1 5 5 5))
 ; ⇒ (1 5 5 5 5 5 5)
 
-
 ; ---- Ejercicio 3 ----
 (define (rotate-left n lst)
   (cond
@@ -56,25 +55,15 @@
 
 (display "\nEjercicio 3 - rotate-left\n")
 (rotate-left 5 '())
-; ⇒ ()
 (rotate-left 0 '(a b c d e f g))
-; ⇒ (a b c d e f g)
 (rotate-left 1 '(a b c d e f g))
-; ⇒ (b c d e f g a)
 (rotate-left -1 '(a b c d e f g))
-; ⇒ (g a b c d e f)
 (rotate-left 3 '(a b c d e f g))
-; ⇒ (d e f g a b c)
 (rotate-left -3 '(a b c d e f g))
-; ⇒ (e f g a b c d)
 (rotate-left 8 '(a b c d e f g))
-; ⇒ (b c d e f g a)
 (rotate-left -8 '(a b c d e f g))
-; ⇒ (g a b c d e f)
 (rotate-left 45 '(a b c d e f g))
-; ⇒ (d e f g a b c)
 (rotate-left -45 '(a b c d e f g))
-; ⇒ (e f g a b c d)
 
 ; ---- Ejercicio 4 ----  
 (require math)
@@ -84,16 +73,10 @@
 
 (display "\nEjercicio 4 - prime-factors\n")
 (prime-factors 1)
-; ⇒ ()
 (prime-factors 6)
-; ⇒ (2 3)
 (prime-factors 96)
-; ⇒ (2 2 2 2 2 3)
 (prime-factors 97)
-; ⇒ (97)
 (prime-factors 666)
-; ⇒ (2 3 3 37)
-
 
 ; ---- Ejercicio 5 ----
 (define (gcd a b)
@@ -145,67 +128,49 @@
 
 (display "\nEjercicio 7 - insert-anywhere\n")
 (insert-everywhere 1 '())
-; ⇒ ((1))
 (insert-everywhere 1 '(a))
-; ⇒ ((1 a) (a 1))
 (insert-everywhere 1 '(a b c))
-; ⇒ ((1 a b c) (a 1 b c) (a b 1 c) (a b c 1))
 (insert-everywhere 1 '(a b c d e))
-; ⇒ ((1 a b c d e)
-; (a 1 b c d e)
-; (a b 1 c d e)
-; (a b c 1 d e)
-; (a b c d 1 e)
-; (a b c d e 1))
 (insert-everywhere 'x '(1 2 3 4 5 6 7 8 9 10))
-; ⇒ ((x 1 2 3 4 5 6 7 8 9 10)
-; (1 x 2 3 4 5 6 7 8 9 10)
-; (1 2 x 3 4 5 6 7 8 9 10)
-; (1 2 3 x 4 5 6 7 8 9 10)
-; (1 2 3 4 x 5 6 7 8 9 10)
-; (1 2 3 4 5 x 6 7 8 9 10)
-; (1 2 3 4 5 6 x 7 8 9 10)
-; (1 2 3 4 5 6 7 x 8 9 10)
-; (1 2 3 4 5 6 7 8 x 9 10)
-; (1 2 3 4 5 6 7 8 9 x 10)
-; (1 2 3 4 5 6 7 8 9 10 x))
+
 ; ---- Ejercicio 8 ----
-; modificar algo
-
-(define (pack lst)
-  (if (equal? lst null) null
-            (cons (paste lst) (pack (throw lst)))
-              ))
-
-(define (paste lst)
-  (cond ((equal? lst null) null)
-        	  ((equal? (cdr lst) null)lst)
-                  ((equal? (car lst) (car (cdr lst)))
-                   (cons (car lst) (paste (cdr lst))))
-                  (true (list (car lst)))
-                  ))
+(define (put lst)
+  (cond 
+    [(equal? lst null) null]
+    [(equal? (cdr lst) null)lst]
+    [(equal? (car lst) (car (cdr lst)))
+      (cons (car lst) (put (cdr lst)))]
+    [true (list (car lst))]))
 
 (define (throw lst)
-  (cond ((equal? lst null) null)
-        	  ((equal? (cdr lst) null) null)
-                  ((equal? (car lst) (car (cdr lst)))
-                   (throw (cdr lst)))
-                  (true (cdr lst))
-                  ))
+  (cond 
+    [(equal? lst null) null]
+    [(equal? (cdr lst) null) null]
+    [(equal? (car lst) (car (cdr lst)))
+      (throw (cdr lst))]
+    [true (cdr lst)]))
+
+(define (pack lst)
+  (if (equal? lst null)
+      null
+      (cons 
+        (put lst) (pack (throw lst)))))
 
 (display "\nEjercicio 8 - pack\n")
 (pack '())
-; ⇒ ()
 (pack '(a a a a b c c a a d e e e e))
-; ⇒ ((a a a a) (b) (c c) (a a) (d) (e e e e))
 (pack '(1 2 3 4 5))
-; ⇒ ((1) (2) (3) (4) (5))
 (pack '(9 9 9 9 9 9 9 9 9))
-; ⇒ ((9 9 9 9 9 9 9 9 9))
 
 ; ---- Ejercicio 9 ----
 (define (compress lst)
-  (foldr (lambda (a b) (cons a (filter (lambda (c) (not (equal? a c))) b))) empty lst))
+  (cond
+    [(null? lst) null]
+    ((null? (cdr lst)) lst)
+    [(equal? (first lst) (first (rest lst)))
+        (compress (rest lst))]
+  [true (cons (first lst) (compress (rest lst)))]))
+
 
 (display "\nEjercicio 9 - compress\n")
 (compress '())
@@ -215,8 +180,6 @@
 (compress '(a a a a b c c a a d e e e e))
 ; ⇒ (a b c a d)
 (compress '(a a a a a a a a a a))
-; ⇒ (a)
-
 
 ; ---- Ejercicio 10 ----
 (define (encode lst)
@@ -228,31 +191,57 @@
 
 (display "\nEjercicio 10 - encode\n")
 (encode '())
-;⇒ ()
+
 (encode '(a a a a b c c a a d e e e e))
-;⇒ ((4 a) (1 b) (2 c) (2 a) (1 d) (4 e))
 (encode '(1 2 3 4 5))
-;⇒ ((1 1) (1 2) (1 3) (1 4) (1 5))
 (encode '(9 9 9 9 9 9 9 9 9))
-;⇒ ((9 9))
 
 ; ---- Ejercicio 11 ----
 (define (encode-modified lst)
-  (for/fold ((ht #hash()))
-            ((key (in-list lst)))
-    (hash-update ht key add1 0)))
+  (define (encode-modified-aux lst)
+    (cond 
+          [(null? lst) null]
+          [(= 1 (caar lst)) (cons (cadar lst) (encode-modified-aux (cdr lst)))]
+          [else 
+              (cons (car lst) (encode-modified-aux (cdr lst)))]))
+  (encode-modified-aux (encode lst)))
 
 (display "\nEjercicio 11 - there-exists-one?\n")
 (encode-modified '())
-; ⇒ ()
 (encode-modified '(a a a a b c c a a d e e e e))
-; ⇒ ((4 a) b (2 c) (2 a) d (4 e))
 (encode-modified '(1 2 3 4 5))
-; ⇒ (1 2 3 4 5)
 (encode-modified '(9 9 9 9 9 9 9 9 9))
-; ⇒ ((9 9))
 
 ; ---- Ejercicio 12 ----
+(define (repeat-items num val)
+  (if (= num 0)
+      empty
+      (cons val (repeat-items (- num 1) val))))
+
+(define (my-decode xs)
+  (define (my-decode-aux xs)
+    (if (null? xs)
+        empty
+        (append (repeat-items (caar xs) (cadar xs))
+                (my-decode-aux (cdr xs)))))
+  (my-decode-aux xs))
+
+(define (decode xs)
+  (define (my-decode-aux xs)
+    (cond [(null? xs) null]
+          [(not (list? (car xs))) (cons 
+                                      (cons 1 (cons (car xs) '()))
+                                      (my-decode-aux (cdr xs)))]
+          [else 
+              (cons (car xs) (my-decode-aux (cdr xs)))]))
+  
+  (my-decode (my-decode-aux xs)))
+
+(display "\nEjercicio 12 - decode\n")
+(decode '())
+(decode '((4 a) b (2 c) (2 a) d (4 e)))
+(decode '(1 2 3 4 5))
+(decode '((9 9)))
 
 ; ---- Ejercicio 13 ----
 (define (args-swap f)
@@ -261,15 +250,11 @@
 
 (display "\nEjercicio 13 - args-swap\n")
 ((args-swap list) 1 2)
-; ⇒ (2 1)
 ((args-swap /) 8 2)
-; ⇒ 1/4
 ((args-swap cons) '(1 2 3) '(4 5 6))
-; ⇒ ((4 5 6) 1 2 3)
 ((args-swap map) '(-1 1 2 5 10) /)
-; ⇒ (-1 1 1/2 1/5 1/10)
 
-; ---- Ejercicio 14 ---- Funciona
+; ---- Ejercicio 14 ----
 (define (there-exists-one? pred lst)
   (cond
     [(empty? lst) #f]
@@ -283,15 +268,10 @@
 
 (display "\nEjercicio 14 - there-exists-one?\n")
 (there-exists-one? positive? '())
-; #f
 (there-exists-one? positive? '(-1 -10 4 -5 -2 -1))
-; #t
 (there-exists-one? negative? '(-1))
-; #t
 (there-exists-one? symbol? '(4 8 15 16 23 42))
-; #f
 (there-exists-one? symbol? '(4 8 15 sixteen 23 42))
-; #t
 
 ; ---- Ejercicio 15 ----
 (define (linear-search lst x check)
@@ -303,15 +283,11 @@
 
 (display "\nEjercicio 15 - linear-search\n")
 (linear-search '() 5 =)
-; ⇒ #f
 (linear-search '(48 77 30 31 5 20 91 92 69 97 28 32 17 18 96) 5 =)
-; ⇒ 4
 (linear-search '("red" "blue" "green" "black" "white") "black" string=?)
-; ⇒ 3
 (linear-search '(a b c d e f g h) 'h equal?)
-; ⇒ 7
 
-; ---- Ejercicio 18 ---- Func
+; ---- Ejercicio 18 ----
 (define (integral a b n f)
 
   (define h (/ (- b a) n))
@@ -342,10 +318,8 @@
 
 (display "\nEjercicio 18 - integral\n")
 (integral 0 1 10 (lambda (x) (* x x x)))
-; ⇒ 1/4
 (integral 1 2 10
   (lambda (x)
     (integral 3 4 10
       (lambda (y)
         (* x y)))))
-; ⇒ 21/4

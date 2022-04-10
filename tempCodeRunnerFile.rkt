@@ -1,1 +1,1 @@
-(displayln "Función 9: Compress")
+car x
