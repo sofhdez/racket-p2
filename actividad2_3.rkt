@@ -18,9 +18,13 @@
 
 (display "Ejercicio 1 - insert\n")
 (insert 14 '())
+; ⇒ (14)
 (insert 4 '(5 6 7 8))
+; ⇒ '(4 5 6 7 8)
 (insert 5 '(1 3 6 7 9 16))
+; ⇒ (1 3 5 6 7 9 16)
 (insert 10 '(1 5 6))
+; ⇒ (1 5 6 10)
 
 
 ; ---- Ejercicio 2 ----
@@ -31,10 +35,13 @@
 
 (display "\nEjercicio 2 - insertion-sort\n")
 (insertion-sort '())
+; ⇒ ()
 (insertion-sort '(4 3 6 8 3 0 9 1 7))
+; ⇒ (0 1 3 3 4 6 7 8 9)
 (insertion-sort '(1 2 3 4 5 6))
+; ⇒ (1 2 3 4 5 6)
 (insertion-sort '(5 5 5 1 5 5 5))
-
+; ⇒ (1 5 5 5 5 5 5)
 
 ; ---- Ejercicio 3 ----
 (define (rotate-left n lst)
@@ -71,7 +78,6 @@
 (prime-factors 97)
 (prime-factors 666)
 
-
 ; ---- Ejercicio 5 ----
 (define (gcd a b)
   (cond
@@ -80,11 +86,17 @@
     [else a]))
 (display "\nEjercicio 5 - gcd\n")
 (gcd 13 7919)
+; ⇒ 1
 (gcd 20 16)
+; ⇒ 4
 (gcd 54 24)
+; ⇒ 6
 (gcd 6307 1995)
+; ⇒ 7
 (gcd 48 180)
+; ⇒ 12
 (gcd 42 56)
+; ⇒ 14
 
 ; ---- Ejercicio 6 ----
 (define (deep-reverse l)
@@ -93,9 +105,13 @@
 
 (display "\nEjercicio 6 - deep-reverse\n")
 (deep-reverse '())
+; ⇒ ()
 (deep-reverse '(a (b c d) 3))
+; ⇒ (3 (d c b) a)
 (deep-reverse '((1 2) 3 (4 (5 6))))
+; ⇒ (((6 5) 4) 3 (2 1))
 (deep-reverse '(a (b (c (d (e (f (g (h i j)))))))))
+; ⇒ ((((((((j i h) g) f) e) d) c) b) a)
 
 ; ---- Ejercicio 7 ----
 (define (insert-at pos elmt lst)
@@ -155,10 +171,14 @@
         (compress (rest lst))]
   [true (cons (first lst) (compress (rest lst)))]))
 
+
 (display "\nEjercicio 9 - compress\n")
 (compress '())
+; ⇒ ()
 (compress '(a b c d))
+; ⇒ '(a b c d)
 (compress '(a a a a b c c a a d e e e e))
+; ⇒ (a b c a d)
 (compress '(a a a a a a a a a a))
 
 ; ---- Ejercicio 10 ----
@@ -171,6 +191,7 @@
 
 (display "\nEjercicio 10 - encode\n")
 (encode '())
+
 (encode '(a a a a b c c a a d e e e e))
 (encode '(1 2 3 4 5))
 (encode '(9 9 9 9 9 9 9 9 9))
