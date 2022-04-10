@@ -9,11 +9,12 @@
 ; ---- Ejercicio 1 ----
 (define (insert n lst)
   (cond
-    [(null? lst)
-      (cons n '())]
-    [(<= n (car lst))
-      (cons n lst)]
-    [(cons (car lst) (insert n (cdr lst)))])
+    [(null? lst)  ; si la lista está vacía
+     (cons n '())]  ; solo se agrega n
+    [(<= n (car lst))  ; caso base
+     (cons n lst)]  ; se agrega el elemento n
+    [(cons (car lst)  ; caso recursivo para buscar la posición de n
+           (insert n (cdr lst)))])
   )
 
 (display "Ejercicio 1 - insert\n")
@@ -30,8 +31,8 @@
 ; ---- Ejercicio 2 ----
 (define (insertion-sort lst)
   (cond
-    [(null? lst) lst]
-    [(insert(car lst)(insertion-sort(cdr lst)))]))
+    [(null? lst) lst]  ; solo se agrega n si lst está vacía
+    [(insert(car lst)(insertion-sort(cdr lst)))]))  ; utilizamos la función anterior
 
 (display "\nEjercicio 2 - insertion-sort\n")
 (insertion-sort '())
@@ -46,11 +47,19 @@
 ; ---- Ejercicio 3 ----
 (define (rotate-left n lst)
   (cond
-    [(empty? lst) '()]
+    [(empty? lst) '()] 
+    ; no se modifica la lista
     [(= n 0) lst]
-    [(> n 0)(if( < n (length lst)) (append(list-tail lst n)(remv* (list-tail lst n) lst))
-              (append(list-tail lst (remainder n (length lst)))(remv* (list-tail lst (remainder n (length lst))) lst)))]
-    [(< n 0) (append(take-right lst (- (remainder n (length lst)) ))(drop-right lst (- (remainder n (length lst)))))]
+    ; movimiento a la derecha
+    [(> n 0)(if ( < n (length lst)) 
+                ; condición cumplida
+                (append(list-tail lst n)(remv* (list-tail lst n) lst))
+                ; condición no cumplida
+                (append(list-tail lst (remainder n (length lst)))
+                       (remv* (list-tail lst (remainder n (length lst))) lst)))]
+    ; movimiento a la izquierda
+    [(< n 0) (append(take-right lst (- (remainder n (length lst)) ))
+                    (drop-right lst (- (remainder n (length lst)))))]
     ))
 
 (display "\nEjercicio 3 - rotate-left\n")
@@ -65,11 +74,13 @@
 (rotate-left 45 '(a b c d e f g))
 (rotate-left -45 '(a b c d e f g))
 
-; ---- Ejercicio 4 ----  
+; ---- Ejercicio 4 ----
 (require math)
 
 (define (prime-factors n)
-  (append-map (lambda (x) (make-list (cadr x) (car x))) (factorize n)))
+  (append-map (lambda (x)  ; (append* (map proc lst ...))
+              (make-list (cadr x) (car x)))  ; crea listas
+              (factorize n)))  ; función que factoriza los elementos de la lista
 
 (display "\nEjercicio 4 - prime-factors\n")
 (prime-factors 1)
@@ -81,9 +92,12 @@
 ; ---- Ejercicio 5 ----
 (define (gcd a b)
   (cond
-    [(> a b) (gcd b (- a b))]
-    [(< a b) (gcd a (- b a))]
-    [else a]))
+    [(> a b)  ; recursividad
+      (gcd b (- a b))]
+    [(< a b) ; recursividad
+      (gcd a (- b a))]
+    [else a]))  ; caso base
+
 (display "\nEjercicio 5 - gcd\n")
 (gcd 13 7919)
 ; ⇒ 1
@@ -100,8 +114,8 @@
 
 ; ---- Ejercicio 6 ----
 (define (deep-reverse l)
-  (if (list? l)
-    (reverse (map deep-reverse l))l))
+  (if (list? l)  ; caso base
+      (reverse (map deep-reverse l))l))  ; recursividad
 
 (display "\nEjercicio 6 - deep-reverse\n")
 (deep-reverse '())
@@ -115,16 +129,19 @@
 
 ; ---- Ejercicio 7 ----
 (define (insert-at pos elmt lst)
-  (if (empty? lst) (list elmt)
-    (if (= 1 pos)
-      (cons elmt lst)
-      (cons (first lst)
-        (insert-at (- pos 1) elmt (rest lst))))))
+  (if (empty? lst) 
+      (list elmt)  ; si lst es vacía
+      (if (= 1 pos)  ; si no está vacía
+          (cons elmt lst)  ; si la posición es 1, caso base
+          (cons (first lst) ; si la posición NO es 1
+                (insert-at (- pos 1) elmt (rest lst)))  ; recursividad
+      )))
 
 (define (insert-everywhere sym los)
-  (map (lambda (i)
-    (insert-at i sym los))
-  (range 1 (+ 2 (length los)))))
+  (map (lambda (i)  ; ciclo
+         (insert-at i sym los))  ; insertar elemento en la posición i
+       (range 1 (+ 2 (length los)))  ; lista desde 1 a la long de lst + 2
+  ))
 
 (display "\nEjercicio 7 - insert-anywhere\n")
 (insert-everywhere 1 '())
@@ -135,26 +152,33 @@
 
 ; ---- Ejercicio 8 ----
 (define (put lst)
-  (cond 
-    [(equal? lst null) null]
-    [(equal? (cdr lst) null)lst]
-    [(equal? (car lst) (car (cdr lst)))
+  (cond
+    [(empty? lst) ; lista vacía
+        null]
+    [(= (length lst) 1)  ; lst de 1 elemento
+        lst]
+    [(equal? (car lst) (car (cdr lst)))  ; caso recursivo
       (cons (car lst) (put (cdr lst)))]
-    [true (list (car lst))]))
+    [true 
+      (list (car lst))]))  ; caso base
 
 (define (throw lst)
-  (cond 
-    [(equal? lst null) null]
-    [(equal? (cdr lst) null) null]
-    [(equal? (car lst) (car (cdr lst)))
-      (throw (cdr lst))]
-    [true (cdr lst)]))
+  (cond
+    [(empty? lst) 
+        null]
+    [(= (length lst) 1)
+      null]
+    [(equal? (car lst) (car (cdr lst))) ; recursivo
+     (throw (cdr lst))]
+    [true (cdr lst)]))  ; base
 
 (define (pack lst)
-  (if (equal? lst null)
+  (if (empty? lst)
+      ; si lst está vacía
       null
-      (cons 
-        (put lst) (pack (throw lst)))))
+      ; si lst no está vacía
+      (cons
+       (put lst) (pack (throw lst)))))
 
 (display "\nEjercicio 8 - pack\n")
 (pack '())
@@ -165,11 +189,14 @@
 ; ---- Ejercicio 9 ----
 (define (compress lst)
   (cond
-    [(null? lst) null]
-    ((null? (cdr lst)) lst)
-    [(equal? (first lst) (first (rest lst)))
-        (compress (rest lst))]
-  [true (cons (first lst) (compress (rest lst)))]))
+    [(empty? lst) 
+      null]
+    ((= (length lst) 1)  ; caso base
+      lst)
+    [(equal? (first lst) (first (rest lst)))  ; primer elemeto = segundo elemento
+      (compress (rest lst))]  ; caso recursivo
+    [true 
+      (cons (first lst) (compress (rest lst)))]))
 
 
 (display "\nEjercicio 9 - compress\n")
@@ -183,11 +210,15 @@
 
 ; ---- Ejercicio 10 ----
 (define (encode lst)
-  (map reverse (reverse (foldl (lambda (x y) 
-    (if (or (empty? y) (not (equal? x (caar y))))
-      (cons (list x 1) y)
-      (cons (list x (add1 (cadar y))) (cdr y))))
-    null lst))))
+  (map reverse
+          (reverse (foldl 
+                      (lambda (x y)  ; manera de ordenar los elementos
+                                (if 
+                                  (or (empty? y)  ; primera condición
+                                    (not (equal? x (caar y))))
+                                  (cons (list x 1) y)
+                                  (cons (list x (add1 (cadar y))) (cdr y))))
+                            null lst))))
 
 (display "\nEjercicio 10 - encode\n")
 (encode '())
@@ -198,13 +229,15 @@
 
 ; ---- Ejercicio 11 ----
 (define (encode-modified lst)
-  (define (encode-modified-aux lst)
-    (cond 
-          [(null? lst) null]
-          [(= 1 (caar lst)) (cons (cadar lst) (encode-modified-aux (cdr lst)))]
-          [else 
-              (cons (car lst) (encode-modified-aux (cdr lst)))]))
-  (encode-modified-aux (encode lst)))
+  (define (encode-modified-aux lst)  ; ciclo
+    (cond
+      [(empty? lst) ; lista vacía
+          null]
+      [(= 1 (caar lst)) 
+          (cons (cadar lst) (encode-modified-aux (cdr lst)))]
+      [else
+       (cons (car lst) (encode-modified-aux (cdr lst)))]))
+  (encode-modified-aux (encode lst)))  ; llamada a la función auxiliar
 
 (display "\nEjercicio 11 - there-exists-one?\n")
 (encode-modified '())
@@ -213,12 +246,13 @@
 (encode-modified '(9 9 9 9 9 9 9 9 9))
 
 ; ---- Ejercicio 12 ----
-(define (repeat-items num val)
+(define (repeat-items num val)  ; función auxiliar
   (if (= num 0)
-      empty
-      (cons val (repeat-items (- num 1) val))))
+      empty  ; caso base
+      (cons val (repeat-items (- num 1) val))  ; caso recursivo
+  ))
 
-(define (my-decode xs)
+(define (my-decode xs)  ; función auxiliar
   (define (my-decode-aux xs)
     (if (null? xs)
         empty
@@ -226,15 +260,17 @@
                 (my-decode-aux (cdr xs)))))
   (my-decode-aux xs))
 
-(define (decode xs)
+(define (decode xs)  ; función principal
   (define (my-decode-aux xs)
-    (cond [(null? xs) null]
-          [(not (list? (car xs))) (cons 
-                                      (cons 1 (cons (car xs) '()))
-                                      (my-decode-aux (cdr xs)))]
-          [else 
-              (cons (car xs) (my-decode-aux (cdr xs)))]))
-  
+    (cond [(empty? xs) 
+              null]
+          [(not (list? (car xs)))
+              (cons
+                  (cons 1 (cons (car xs) '()))
+                  (my-decode-aux (cdr xs)))]
+          [else
+           (cons (car xs) (my-decode-aux (cdr xs)))]))
+
   (my-decode (my-decode-aux xs)))
 
 (display "\nEjercicio 12 - decode\n")
@@ -246,7 +282,7 @@
 ; ---- Ejercicio 13 ----
 (define (args-swap f)
   (lambda (x y)
-    (f y x)))
+    (f y x)))  ; cambiar el orden
 
 (display "\nEjercicio 13 - args-swap\n")
 ((args-swap list) 1 2)
@@ -257,11 +293,11 @@
 ; ---- Ejercicio 14 ----
 (define (there-exists-one? pred lst)
   (cond
-    [(empty? lst) #f]
+    [(empty? lst) #f]  ; lista vacía
     [else (cond
-            [(pred (first lst))
-              #t]
-            [else map (there-exists-one? pred (rest lst))]
+            [(pred (first lst))  ; checar el primer elemento, caso base
+             #t]
+            [else map (there-exists-one? pred (rest lst))]  ; caso recursivo
             )]
     )
   )
@@ -276,10 +312,10 @@
 ; ---- Ejercicio 15 ----
 (define (linear-search lst x check)
   (cond
-    [(null? lst) #f]
-    [(if(check x (first lst))
-        0
-        (+ 1 (linear-search (rest lst) x check)))]))
+    [(empty? lst) #f]  ; lista vacía
+    [(if(check x (first lst))  ; checa el primer elemento
+        0  ; primer elemento 0
+        (+ 1 (linear-search (rest lst) x check)))]))  ; caso recursivo
 
 (display "\nEjercicio 15 - linear-search\n")
 (linear-search '() 5 =)
@@ -290,9 +326,9 @@
 ; ---- Ejercicio 18 ----
 (define (integral a b n f)
 
-  (define h (/ (- b a) n))
+  (define h (/ (- b a) n))  ; definimos 'h'
 
-  (define ncopia n)
+  (define ncopia n)  ; hacemos copia de 'n'
 
   (define (sumaIntegrales a b n f)
     ; Contador en 0
@@ -319,7 +355,7 @@
 (display "\nEjercicio 18 - integral\n")
 (integral 0 1 10 (lambda (x) (* x x x)))
 (integral 1 2 10
-  (lambda (x)
-    (integral 3 4 10
-      (lambda (y)
-        (* x y)))))
+          (lambda (x)
+            (integral 3 4 10
+                      (lambda (y)
+                        (* x y)))))
